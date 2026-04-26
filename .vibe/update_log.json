@@ -1,0 +1,9 @@
+{
+  "updates": [
+    {
+      "date": "2026-04-26",
+      "action": "generated_docs_and_wiki_from_URD_V3",
+      "notes": "按 strict 级别生成 docs、wiki 与 .vibe 追踪文件。"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "generated_at": "2026-04-26T00:00:00-07:00",
+  "accepted_couplings": [
+    {
+      "id": "ADD-COUP-001",
+      "reason": "源端读取状态必须进入任务状态机",
+      "guard_tests": [
+        "TDD-TEST-003",
+        "TDD-TEST-004"
+      ]
+    },
+    {
+      "id": "ADD-COUP-002",
+      "reason": "上传完成后必须读取目标 metadata 才能校验",
+      "guard_tests": [
+        "TDD-TEST-010",
+        "TDD-TEST-011",
+        "TDD-TEST-012"
+      ]
+    },
+    {
+      "id": "ADD-COUP-003",
+      "reason": "manifest 是跨模块审计结果",
+      "guard_tests": [
+        "TDD-TEST-015"
+      ]
+    }
+  ]
+}

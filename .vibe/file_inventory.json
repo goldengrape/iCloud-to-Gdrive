@@ -1,0 +1,135 @@
+{
+  "generated_at": "2026-04-26T00:00:00-07:00",
+  "files": [
+    {
+      "path": ".vibe/coupling_history.json",
+      "sha256": "3a88d5e71f369a441990846b8132acd9372e2ed64c151637863a6b9ecf8e5edd",
+      "bytes": 630
+    },
+    {
+      "path": ".vibe/doc_state.json",
+      "sha256": "d4ef2131daa8a5b9bdd6ddbc311d3678788dd50d90878e7022ff0559226ab580",
+      "bytes": 299
+    },
+    {
+      "path": ".vibe/trace.json",
+      "sha256": "bcdb2475cc0647c937f66fa01c528075db2f49ec52641b3080850241ea9d991c",
+      "bytes": 1477
+    },
+    {
+      "path": ".vibe/update_log.json",
+      "sha256": "19bc8e03a91e6c972f8055af7ec300126e405140a91154f7ee897499ebbcfcbd",
+      "bytes": 197
+    },
+    {
+      "path": "README.md",
+      "sha256": "8be30e72d67aa96112091fea1f223d22b20aaecd985c666c51f7fcb5cf8fa81c",
+      "bytes": 1311
+    },
+    {
+      "path": "docs/ADD.md",
+      "sha256": "f7f1986eb683367ec438f4f8329f5d2ea6d315f15de08b4a869264d11b65e278",
+      "bytes": 4296
+    },
+    {
+      "path": "docs/CHANGELOG.md",
+      "sha256": "b85ea2bd5d1f800c7a5d67119aec28d4961221e48709a5c07c8ab104ffb24d12",
+      "bytes": 550
+    },
+    {
+      "path": "docs/MDD.md",
+      "sha256": "4a31ff814175dc1f9b5f9bc414b853f379363f15d79a30ca4bd814dfb03117a2",
+      "bytes": 7340
+    },
+    {
+      "path": "docs/PARKING_LOT.md",
+      "sha256": "3e142fb1f6f08565d3bb77102045f06dbc30a2f39bd733084368e8bfe55d4ac3",
+      "bytes": 912
+    },
+    {
+      "path": "docs/REFERENCES.md",
+      "sha256": "499c8a99ee161b58e10f129e63cc37438a507d31e742e212e83fb0bb4c247a42",
+      "bytes": 1129
+    },
+    {
+      "path": "docs/RMD.md",
+      "sha256": "5c609887e2e4450e807202b07ee705512df5868402e93313c2d0c9cbf60388cd",
+      "bytes": 4476
+    },
+    {
+      "path": "docs/TDD.md",
+      "sha256": "cb3323d107d932283132a37974242ed11ea9c7062c3170e1ebf21874ab60596d",
+      "bytes": 4536
+    },
+    {
+      "path": "docs/TRACE.md",
+      "sha256": "553da36a23d067bc7a4791b33b00b7836bfa4c1a15c2802c6addf77db25ee46f",
+      "bytes": 2790
+    },
+    {
+      "path": "docs/URD.md",
+      "sha256": "4d0d75838d5bafd4ac4c579e2a426b16c02538c690b18d34b389c12427de6a90",
+      "bytes": 9404
+    },
+    {
+      "path": "wiki/decisions/DEC-001-local-client.md",
+      "sha256": "ceb085368bc75fc5b94d63ddc2484b065a4a87284f0d606a9f983a1b9cbc7092",
+      "bytes": 540
+    },
+    {
+      "path": "wiki/decisions/DEC-002-mvp-no-delete.md",
+      "sha256": "1933e9c8880e8307e9774678397bd18338ec3a587db1e7a0b310ffe2fa1706e6",
+      "bytes": 488
+    },
+    {
+      "path": "wiki/index.md",
+      "sha256": "788169df4b1b71c5d1c677688f0126c7311f64fac867cb0fc90364484ffd4cba",
+      "bytes": 791
+    },
+    {
+      "path": "wiki/interfaces/manifest-record.md",
+      "sha256": "1a9654c86d195b7eab7327e1f0e72364daf6b456722c9640903e47e1d14fd5d9",
+      "bytes": 823
+    },
+    {
+      "path": "wiki/issues/PROB-001-platform-download-state.md",
+      "sha256": "dc51354dfce7256daad040c3caf0b90b0e102f9b99f2f359e60d7d92574867ac",
+      "bytes": 633
+    },
+    {
+      "path": "wiki/modules/source-adapters.md",
+      "sha256": "414f38f6a9954191fd57583728bc6bdea4edd4760fc1a65963ce9af71cb2047d",
+      "bytes": 545
+    },
+    {
+      "path": "wiki/modules/upload-verifier.md",
+      "sha256": "bba7938b28fdd4edaab33a58eaca20683b42b12ff22f652f73cae78a5b11498c",
+      "bytes": 827
+    },
+    {
+      "path": "wiki/paths/build-path.md",
+      "sha256": "efb525d8a8cc07c01de4703be4c40b25a196a75a83050ee126eb009c60d54634",
+      "bytes": 552
+    },
+    {
+      "path": "wiki/requirements/platform-matrix.md",
+      "sha256": "ec0fa6da9598bd32a477268a4ea77bb1220c71b9dc818f9054c94956a9cfe242",
+      "bytes": 695
+    },
+    {
+      "path": "wiki/requirements/security-boundaries.md",
+      "sha256": "c45f0b7f9a0024292ca98f40ea77d601db170930d51f56e1175ec5b9935cfacb",
+      "bytes": 722
+    },
+    {
+      "path": "wiki/terms/manifest.md",
+      "sha256": "75e0011a98aa86d745c93ddb8f4eba3e55d1f7a901287d14a678d94b0b62eda4",
+      "bytes": 474
+    },
+    {
+      "path": "wiki/tests/verification-tests.md",
+      "sha256": "2baf590291050b171a5ad92feae037f60669055ce3e09766a5ce1ca75538af60",
+      "bytes": 536
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-04-26T00:00:00-07:00",
+  "project": "icloud-to-google-drive-migration-tool",
+  "document_level": "strict",
+  "links": [
+    {
+      "source": "URD-REQ-001",
+      "target": "ADD-FR-001",
+      "relation": "refines"
+    },
+    {
+      "source": "ADD-FR-001",
+      "target": "MDD-MOD-002",
+      "relation": "designed_by"
+    },
+    {
+      "source": "MDD-MOD-002",
+      "target": "TDD-TEST-003",
+      "relation": "tested_by"
+    },
+    {
+      "source": "TDD-TEST-003",
+      "target": "RMD-TASK-008",
+      "relation": "implemented_in"
+    },
+    {
+      "source": "URD-REQ-011",
+      "target": "MDD-MOD-003",
+      "relation": "designed_by"
+    },
+    {
+      "source": "MDD-MOD-003",
+      "target": "TDD-TEST-005",
+      "relation": "tested_by"
+    },
+    {
+      "source": "URD-REQ-015",
+      "target": "MDD-MOD-006",
+      "relation": "designed_by"
+    },
+    {
+      "source": "MDD-MOD-006",
+      "target": "TDD-TEST-010",
+      "relation": "tested_by"
+    },
+    {
+      "source": "URD-REQ-017",
+      "target": "MDD-DATA-004",
+      "relation": "designed_by"
+    },
+    {
+      "source": "MDD-DATA-004",
+      "target": "wiki/interfaces/manifest-record.md",
+      "relation": "summarized_by"
+    },
+    {
+      "source": "URD-REQ-020",
+      "target": "MDD-MOD-010",
+      "relation": "designed_by"
+    },
+    {
+      "source": "MDD-MOD-010",
+      "target": "TDD-TEST-019",
+      "relation": "tested_by"
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+# Generated package manifest
+
+Generated: 2026-04-26
+
+- `.vibe/coupling_history.json` — 630 bytes — sha256 `3a88d5e71f369a441990846b8132acd9372e2ed64c151637863a6b9ecf8e5edd`
+- `.vibe/doc_state.json` — 299 bytes — sha256 `d4ef2131daa8a5b9bdd6ddbc311d3678788dd50d90878e7022ff0559226ab580`
+- `.vibe/trace.json` — 1477 bytes — sha256 `bcdb2475cc0647c937f66fa01c528075db2f49ec52641b3080850241ea9d991c`
+- `.vibe/update_log.json` — 197 bytes — sha256 `19bc8e03a91e6c972f8055af7ec300126e405140a91154f7ee897499ebbcfcbd`
+- `README.md` — 1311 bytes — sha256 `8be30e72d67aa96112091fea1f223d22b20aaecd985c666c51f7fcb5cf8fa81c`
+- `docs/ADD.md` — 4296 bytes — sha256 `f7f1986eb683367ec438f4f8329f5d2ea6d315f15de08b4a869264d11b65e278`
+- `docs/CHANGELOG.md` — 550 bytes — sha256 `b85ea2bd5d1f800c7a5d67119aec28d4961221e48709a5c07c8ab104ffb24d12`
+- `docs/MDD.md` — 7340 bytes — sha256 `4a31ff814175dc1f9b5f9bc414b853f379363f15d79a30ca4bd814dfb03117a2`
+- `docs/PARKING_LOT.md` — 912 bytes — sha256 `3e142fb1f6f08565d3bb77102045f06dbc30a2f39bd733084368e8bfe55d4ac3`
+- `docs/REFERENCES.md` — 1129 bytes — sha256 `499c8a99ee161b58e10f129e63cc37438a507d31e742e212e83fb0bb4c247a42`
+- `docs/RMD.md` — 4476 bytes — sha256 `5c609887e2e4450e807202b07ee705512df5868402e93313c2d0c9cbf60388cd`
+- `docs/TDD.md` — 4536 bytes — sha256 `cb3323d107d932283132a37974242ed11ea9c7062c3170e1ebf21874ab60596d`
+- `docs/TRACE.md` — 2790 bytes — sha256 `553da36a23d067bc7a4791b33b00b7836bfa4c1a15c2802c6addf77db25ee46f`
+- `docs/URD.md` — 9404 bytes — sha256 `4d0d75838d5bafd4ac4c579e2a426b16c02538c690b18d34b389c12427de6a90`
+- `wiki/decisions/DEC-001-local-client.md` — 540 bytes — sha256 `ceb085368bc75fc5b94d63ddc2484b065a4a87284f0d606a9f983a1b9cbc7092`
+- `wiki/decisions/DEC-002-mvp-no-delete.md` — 488 bytes — sha256 `1933e9c8880e8307e9774678397bd18338ec3a587db1e7a0b310ffe2fa1706e6`
+- `wiki/index.md` — 791 bytes — sha256 `788169df4b1b71c5d1c677688f0126c7311f64fac867cb0fc90364484ffd4cba`
+- `wiki/interfaces/manifest-record.md` — 823 bytes — sha256 `1a9654c86d195b7eab7327e1f0e72364daf6b456722c9640903e47e1d14fd5d9`
+- `wiki/issues/PROB-001-platform-download-state.md` — 633 bytes — sha256 `dc51354dfce7256daad040c3caf0b90b0e102f9b99f2f359e60d7d92574867ac`
+- `wiki/modules/source-adapters.md` — 545 bytes — sha256 `414f38f6a9954191fd57583728bc6bdea4edd4760fc1a65963ce9af71cb2047d`
+- `wiki/modules/upload-verifier.md` — 827 bytes — sha256 `bba7938b28fdd4edaab33a58eaca20683b42b12ff22f652f73cae78a5b11498c`
+- `wiki/paths/build-path.md` — 552 bytes — sha256 `efb525d8a8cc07c01de4703be4c40b25a196a75a83050ee126eb009c60d54634`
+- `wiki/requirements/platform-matrix.md` — 695 bytes — sha256 `ec0fa6da9598bd32a477268a4ea77bb1220c71b9dc818f9054c94956a9cfe242`
+- `wiki/requirements/security-boundaries.md` — 722 bytes — sha256 `c45f0b7f9a0024292ca98f40ea77d601db170930d51f56e1175ec5b9935cfacb`
+- `wiki/terms/manifest.md` — 474 bytes — sha256 `75e0011a98aa86d745c93ddb8f4eba3e55d1f7a901287d14a678d94b0b62eda4`
+- `wiki/tests/verification-tests.md` — 536 bytes — sha256 `2baf590291050b171a5ad92feae037f60669055ce3e09766a5ce1ca75538af60`
