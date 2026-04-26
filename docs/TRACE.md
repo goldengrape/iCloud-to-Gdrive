@@ -1,5 +1,9 @@
 # TRACE - Project Map / 追踪表
 
+## 0. 实施进展追踪
+
+- 首批功能实现：RMD-TASK-001 至 RMD-TASK-012 全部完成并通过测试。对应需求已全部闭环。
+
 ## 1. 需求到设计追踪
 
 | URD | ADD | MDD | TDD | RMD | Wiki |
