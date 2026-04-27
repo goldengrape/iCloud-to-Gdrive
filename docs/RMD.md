@@ -118,14 +118,14 @@ Git 检查点：`feat/rmd-task-014-real-drive-upload`。
 测试：E2E-TEST-001。  
 Git 检查点：`feat/rmd-task-015-real-windows-fs`。
 
-### RMD-TASK-016 实现 CLI 入口与端到端串联 [未完成]
+### RMD-TASK-016 实现 CLI 入口与端到端串联 [已完成]
 
 目标：实现 `main.py` 和基于 `argparse` / `click` 的命令行界面，整合所有前置的 Real 适配器和验证引擎。  
 依赖：RMD-TASK-014, RMD-TASK-015。  
 测试：E2E-TEST-005。  
 Git 检查点：`feat/rmd-task-016-cli-runner`。
 
-### RMD-TASK-017 Windows 真实环境集成测试 [未完成]
+### RMD-TASK-017 Windows 真实环境集成测试 [已完成]
 
 目标：不挂载任何 Mock 组件，完整跑通 `本地目录扫描 -> 哈希计算 -> Google API 上传 -> Drive校验 -> 导出 Manifest`。  
 依赖：RMD-TASK-016。  

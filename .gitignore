@@ -221,3 +221,8 @@ __marimo__/
 client_secret.json
 credentials.json
 token.json
+
+# Migration specific
+migration.db
+manifest_*.json
+manifest_*.csv

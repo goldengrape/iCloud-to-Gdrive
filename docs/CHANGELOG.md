@@ -1,8 +1,16 @@
 # CHANGELOG
 
-## 2026-04-26
+## 2026-04-27
 
-### 文档修复批次
+### 任务更新
+
+- 完成了 RMD-TASK-016：实现 CLI 入口与端到端串联，集成了 `RealWindowsICloudAdapter`、`RealGoogleDriveAdapter`、`VerificationEngine` 和 `TaskStore`。
+- 新增 `src/rmd/engine.py` 实现文件迁移调度器。
+- 新增 `src/rmd/main.py` 作为 `argparse` 的统一命令行入口。
+- 新增文件级别的断点续传能力（对 `VERIFIED_MATCH` 状态的文件予以跳过）。
+- 完成了 RMD-TASK-017：Windows 真实环境集成测试，成功运行所有相关 `pytest` 和 E2E 脚本。
+
+## 2026-04-26
 
 - 将 URD 的“当前版本范围”改为 Phase 2 目标范围，明确当前代码仍处于 Mock 原型验证后状态。
 - 将 Windows Photos 验收与 macOS PhotoKit 验收拆分，避免 Windows MVP 被 Live Photo / RAW+JPEG 关系验收阻塞。
