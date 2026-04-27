@@ -1,4 +1,5 @@
 import io
+import hashlib
 from typing import Iterator, Tuple, Dict, List
 from dataclasses import dataclass
 from .models import TransferItem, MigrationStatus
@@ -17,7 +18,7 @@ class MockWindowsICloudAdapter(SourceAdapter):
 
     def list_items(self) -> Iterator[TransferItem | WinFileEvent]:
         for path, meta in self.mock_fs.items():
-            record_id = f"win_icloud_{hash(path)}"
+            record_id = f"win_icloud_{hashlib.sha1(path.encode('utf-8')).hexdigest()}"
 
             # URD-REQ-010: Only process downloaded files on Windows
             if not meta.get("downloaded", True):

@@ -20,7 +20,7 @@ Git 检查点：`feat/rmd-task-002-core-models`。
 
 ### RMD-TASK-003 实现 TaskStore 与 ManifestWriter [已完成 (Mock验证阶段)]
 
-目标：SQLite 状态持久化、JSON manifest、CSV 导出、record_hash、manifest_sha256。  
+目标：SQLite 状态持久化、JSON manifest、CSV 导出、record_hash、manifest_sha256 的最小 Mock 版本。文档修复后要求 manifest hash 必须可独立验证，当前代码需在后续修复项中补齐。  
 依赖：RMD-TASK-002。  
 测试：TDD-TEST-015、TDD-TEST-020。  
 Git 检查点：`feat/rmd-task-003-taskstore-manifest`。
@@ -50,7 +50,7 @@ Git 检查点：`feat/rmd-task-006-google-auth`。
 
 目标：5MB 阈值、session URI 持久化、Range 查询、offset 续传、错误分类。（当前为 Mock）  
 依赖：RMD-TASK-006。  
-测试：TDD-TEST-009、TDD-TEST-016、TDD-TEST-017。  
+测试：TDD-TEST-009、TDD-TEST-016A、TDD-TEST-016B、TDD-TEST-017。  
 Git 检查点：`feat/rmd-task-007-drive-upload`。
 
 ### RMD-TASK-008 实现 macOS iCloud Drive 适配器 [已完成 (Mock验证阶段)]
@@ -76,24 +76,31 @@ Git 检查点：`feat/rmd-task-010-windows-icloud-files`。
 
 ### RMD-TASK-011 实现冲突处理和用户选择 [已完成 (Mock验证阶段)]
 
-目标：同名同哈希跳过，同名不同哈希进入冲突，用户选择重命名、跳过或覆盖。  
+目标：同名且强校验一致时跳过，同名但哈希不同或只有弱校验时进入冲突，用户选择重命名、跳过或覆盖。当前 Mock 代码需确保 `VERIFIED_WEAK` 不会自动变成 `SKIPPED_ALREADY_EXISTS`。  
 依赖：RMD-TASK-007。  
 测试：TDD-TEST-013、TDD-TEST-014。  
 Git 检查点：`feat/rmd-task-011-conflict-policy`。
 
 ### RMD-TASK-012 实现清理指引 [已完成 (Mock验证阶段)]
 
-目标：只读读取 manifest，复核目标端仍存在，展示手动清理指引和风险提示。  
+目标：只读读取 manifest，复核目标端仍存在，只展示复核通过的清理候选，并把复核失败项单独列为风险提示。  
 依赖：RMD-TASK-003、RMD-TASK-007。  
 测试：TDD-TEST-018、TDD-TEST-019。  
 Git 检查点：`feat/rmd-task-012-cleanup-advisor`。
+
+### RMD-TASK-012A 修复 Mock 阶段文档契约缺口 [已完成]
+
+目标：在进入真实 Windows 接入前，先修复上轮审核发现的 Mock 代码契约问题：稳定 `record_id`、manifest hash 可验证、`VERIFIED_WEAK` 不自动跳过、清理候选只包含复核通过项、`DriveFileMetadata` 支持 `headRevisionId`、source metadata size 与实际 stream size 不一致时进入失败状态。  
+依赖：RMD-TASK-003、RMD-TASK-004、RMD-TASK-011、RMD-TASK-012。  
+测试：TDD-TEST-012、TDD-TEST-014、TDD-TEST-015、TDD-TEST-018。  
+Git 检查点：`fix/rmd-task-012a-contract-alignment`。
 
 ## 2. Windows 真实接入与端到端集成 (Phase 2 - 当前优先级)
 
 ### RMD-TASK-013 实现真实 Google OAuth 与 Token 本地安全存储 [未完成]
 
 目标：引入 `google-auth-oauthlib`，实现真实的浏览器拉起和本地回调；在 Windows 上使用 `keyring` 将 token 写入 Credential Manager。  
-依赖：RMD-TASK-006（重写）。  
+依赖：RMD-TASK-006（重写）、RMD-TASK-012A。  
 测试：E2E-TEST-002。  
 Git 检查点：`feat/rmd-task-013-real-google-auth`。
 
@@ -131,6 +138,8 @@ Git 检查点：`feat/rmd-task-017-windows-e2e`。
 - RMD-STOP-002：任何自动删除代码路径出现时停止发布。
 - RMD-STOP-003：Windows Photos 文案必须明确能力限制。
 - RMD-STOP-004：manifest 必须能重建每条记录从源端到目标端的迁移证据。
+- RMD-STOP-005：`VERIFIED_WEAK` 若被用于自动跳过、覆盖或清理候选，停止发布。
+- RMD-STOP-006：manifest hash 若无法验证最终 JSON 或 canonical JSON，停止发布。
 
 ## 4. 回滚点
 

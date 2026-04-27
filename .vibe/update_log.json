@@ -9,6 +9,11 @@
       "date": "2026-04-26",
       "action": "completed_initial_rmd_tasks",
       "notes": "首批12个RMD任务全部实现并通过测试，已同步更新CHANGELOG, RMD.md, TRACE.md及wiki日志。"
+    },
+    {
+      "date": "2026-04-26",
+      "action": "document_consistency_fix",
+      "notes": "修复 docs/wiki/.vibe 中的 Phase 边界、Photos 验收、manifest 完整性、弱校验、清理候选和构建路径不一致。"
     }
   ]
 }

@@ -63,6 +63,42 @@
       "source": "MDD-MOD-010",
       "target": "TDD-TEST-019",
       "relation": "tested_by"
+    },
+    {
+      "source": "URD-REQ-016",
+      "target": "TDD-TEST-014",
+      "relation": "tested_by"
+    },
+    {
+      "source": "URD-REQ-017",
+      "target": "TDD-TEST-015",
+      "relation": "tested_by"
+    },
+    {
+      "source": "URD-REQ-020",
+      "target": "MDD-API-006",
+      "relation": "implemented_by_contract"
+    },
+    {
+      "source": "URD-REQ-020",
+      "target": "MDD-API-007",
+      "relation": "implemented_by_contract"
+    },
+    {
+      "source": "RMD-TASK-012A",
+      "target": "TDD-TEST-014",
+      "relation": "tested_by"
+    },
+    {
+      "source": "RMD-TASK-012A",
+      "target": "TDD-TEST-015",
+      "relation": "tested_by"
+    },
+    {
+      "source": "RMD-TASK-012A",
+      "target": "TDD-TEST-018",
+      "relation": "tested_by"
     }
-  ]
+  ],
+  "last_updated": "2026-04-26"
 }

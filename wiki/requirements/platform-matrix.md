@@ -6,13 +6,14 @@
 
 macOS 和 Windows 不能按同等能力实现。
 
-## macOS
+## macOS（Phase 3）
 
 - iCloud Drive：本地 iCloud Drive 文件，读取时要处理同步、占位、下载中和 package。
 - Photos：PhotoKit 模式，支持 Photos Library 中的资产关系。
 - Package：默认压缩成 `.zip` 上传，保留压缩前文件数和大小。
+- 这些能力不是当前 Phase 2 Windows MVP 的实现范围。
 
-## Windows
+## Windows（Phase 2 当前优先）
 
 - iCloud Drive：iCloud for Windows 暴露的本地目录。
 - Photos：只处理本地同步目录中的媒体文件。

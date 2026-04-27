@@ -14,8 +14,15 @@ ManifestRecord 是清理建议和排查问题的依据。它必须记录成功�
 - 资源关系：`resource_group_id`、`resource_kind`
 - 状态：`status`、`failure_reason`、`retry_count`
 - 时间：`started_at`、`uploaded_at`、`verified_at`
-- 防篡改：`record_hash`，文件级 manifest 还要有 `manifest_sha256`
+- 完整性校验：`record_hash`，文件级 manifest 还要有可验证的 `manifest_sha256`
 
 ## 规则
 
 只有 VerificationEngine 能把状态设置为 `VERIFIED_MATCH`。
+
+
+## manifest_sha256 口径
+
+来源：URD-REQ-017、MDD-API-005。
+
+`manifest_sha256` 必须能被独立验证。若写在 JSON 内，计算时排除 `metadata.manifest_sha256` 字段并使用 canonical JSON；若写入 `.sha256` 旁路文件，则覆盖最终落盘的 `manifest.json`。

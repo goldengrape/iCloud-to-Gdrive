@@ -4,7 +4,7 @@
 
 ## 1. 测试策略
 
-> **当前阶段声明 (Phase 1)**：目前的 `TDD-TEST-001` 至 `TDD-TEST-020` 测试均已通过，但**全数运行在基于内存字典的 Mock 适配器上**，只证明了核心逻辑和状态机的正确性。
+> **当前阶段声明 (Phase 1)**：原有 Mock 测试已通过，但它们全数运行在基于内存字典的 Mock 适配器上，只证明了核心逻辑和状态机的雏形。文档修复后新增或细化的测试项（例如 `TDD-TEST-006W`、`TDD-TEST-016A/B`、manifest hash 可验证性、弱校验不自动跳过）需要补充实现，不能视为当前代码已通过。
 
 - 单元测试：数据结构、状态机、哈希比对、错误分类（已通过 Mock 验证）。
 - 合同测试：SourceAdapter、GoogleDriveTargetAdapter、ManifestWriter、CleanupAdvisor。
@@ -21,20 +21,22 @@
 | TDD-TEST-002 | 本地传输路径 | URD-REQ-001, URD-AC-002 | 网络请求只发往 Google OAuth/Drive API，不向第三方上传文件内容 |
 | TDD-TEST-003 | macOS iCloud Drive 占位文件状态 | URD-REQ-010 | 未下载文件进入 SOURCE_PLACEHOLDER 或 SOURCE_DOWNLOADING，完成后才上传 |
 | TDD-TEST-004 | Windows 未下载文件处理 | URD-REQ-010, URD-AC-008 | 未下载文件不会被当作成功项，UI 提示用户先下载到本机 |
-| TDD-TEST-005 | Live Photo 关联 | URD-REQ-011, URD-AC-004 | 静态图与 MOV 两条记录拥有相同 resource_group_id |
-| TDD-TEST-006 | RAW+JPEG 关联 | URD-REQ-011, URD-AC-004 | RAW 与 JPEG 两条记录拥有相同 resource_group_id 且 resource_kind 不同 |
+| TDD-TEST-005 | macOS Live Photo 关联（Phase 3） | URD-REQ-011, URD-AC-004B | 静态图与 MOV 两条记录拥有相同 resource_group_id；不作为 Windows Phase 2 必验项 |
+| TDD-TEST-006 | macOS RAW+JPEG 关联（Phase 3） | URD-REQ-011, URD-AC-004B | RAW 与 JPEG 两条记录拥有相同 resource_group_id 且 resource_kind 不同；不作为 Windows Phase 2 必验项 |
+| TDD-TEST-006W | Windows Photos 降级验收 | URD-REQ-011, URD-AC-004A, URD-AC-008 | 只验收本地已下载媒体文件的迁移完整性，不要求相册、Live Photo 或 RAW+JPEG 资产关系 |
 | TDD-TEST-007 | Sidecar 生成 | URD-REQ-012 | 库级元数据写入 sidecar，原始媒体文件未被修改 |
 | TDD-TEST-008 | drive.file 权限 | URD-REQ-013 | OAuth 请求默认只包含 drive.file 与必要最小辅助 scope |
 | TDD-TEST-009 | resumable upload session 持久化 | URD-REQ-014, URD-AC-006 | 进程重启后能读取 session URI 并查询 Range 继续上传 |
 | TDD-TEST-010 | SHA-256 优先校验 | URD-REQ-015, URD-AC-003 | 目标返回 sha256Checksum 时以 SHA-256 为最终判定 |
 | TDD-TEST-011 | MD5 降级校验 | URD-REQ-015 | 目标仅返回 md5Checksum 时，使用本地 MD5 比对并保留 SHA-256 证据 |
 | TDD-TEST-012 | checksum 不可用弱校验 | URD-REQ-015 | checksum 不可用时状态为 VERIFIED_WEAK，不得为 VERIFIED_MATCH |
-| TDD-TEST-013 | 目标同名一致跳过 | URD-REQ-016 | 哈希一致时状态为 SKIPPED_ALREADY_EXISTS，不重复上传 |
-| TDD-TEST-014 | 目标同名冲突 | URD-REQ-016 | 哈希不同进入 CONFLICT_TARGET_EXISTS，不自动覆盖 |
-| TDD-TEST-015 | manifest 字段完整 | URD-REQ-017, URD-AC-005 | 每条记录含必填字段、record_hash、manifest_sha256 |
-| TDD-TEST-016 | 限流退避 | URD-REQ-019 | 429/403 rate limit 触发带随机抖动的指数退避 |
+| TDD-TEST-013 | 目标同名强校验一致跳过 | URD-REQ-016 | 字节级强校验一致时状态为 SKIPPED_ALREADY_EXISTS，不重复上传 |
+| TDD-TEST-014 | 目标同名冲突 | URD-REQ-016 | 哈希不同进入 CONFLICT_TARGET_EXISTS，不自动覆盖；VERIFIED_WEAK 不得自动跳过 |
+| TDD-TEST-015 | manifest 字段完整与完整性校验 | URD-REQ-017, URD-AC-005 | 每条记录含必填字段、record_hash；manifest_sha256 能按声明口径验证最终 JSON 或 canonical JSON |
+| TDD-TEST-016A | Drive 错误分类（Mock） | URD-REQ-019 | 429/403/5xx、quota、storage 错误能映射到正确状态 |
+| TDD-TEST-016B | 限流退避调度 | URD-REQ-019 | 429/403 rate limit 触发带随机抖动的指数退避，并记录下一次重试时间 |
 | TDD-TEST-017 | 配额暂停 | URD-REQ-019 | storage quota 或 750GB 类错误进入 UPLOAD_PAUSED_QUOTA 并提示用户 |
-| TDD-TEST-018 | 清理列表目标复核 | URD-REQ-020 | 展示前重新读取目标 size/checksum/revision；不一致则不展示 |
+| TDD-TEST-018 | 清理候选目标复核 | URD-REQ-020 | 展示前重新读取目标 size/checksum/revision；只展示复核通过项，复核失败项进入风险提示列表 |
 | TDD-TEST-019 | 禁止自动删除 | URD-REQ-020, URD-AC-007 | MVP 构建中不存在 iCloud 删除接口调用路径 |
 | TDD-TEST-020 | 日志脱敏 | URD-CON-002 | 日志中不出现 token、完整文件内容、Apple 账户凭据 |
 
@@ -65,8 +67,9 @@
 ### TDD-DATA-003 复合资源
 
 - `.pages` package
-- Live Photo：HEIC/JPG + MOV
-- RAW+JPEG
+- macOS Phase 3 Live Photo：HEIC/JPG + MOV
+- macOS Phase 3 RAW+JPEG
+- Windows Phase 2 普通照片/视频文件
 - 带 sidecar 的照片资产
 
 ### TDD-DATA-004 失败输入

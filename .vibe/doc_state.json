@@ -13,5 +13,7 @@
     "REFERENCES.md"
   ],
   "wiki_policy": "derived_only",
-  "source_of_truth": "docs/"
+  "source_of_truth": "docs/",
+  "last_document_fix": "2026-04-26",
+  "notes": "文档修复：Phase 边界、Photos 验收、manifest 完整性、CleanupAdvisor 输出、wiki 对齐。"
 }

@@ -21,3 +21,10 @@
 - 429、403 rate limit、5xx：退避重试。
 - 配额或存储不足：进入暂停状态并提示用户。
 - session 过期：重新创建 session，保留失败记录。
+
+
+## 冲突规则
+
+来源：URD-REQ-016、TDD-TEST-013、TDD-TEST-014。
+
+只有强校验一致才能自动跳过同名目标文件。`VERIFIED_WEAK` 不能作为 `SKIPPED_ALREADY_EXISTS` 的依据，也不能进入清理候选。

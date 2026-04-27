@@ -42,17 +42,18 @@ def test_cleanup_advisor_reverification():
         return mock_drive_state.get(file_id)
 
     advisor = CleanupAdvisor(mock_target_checker)
-    candidates = advisor.list_verified_items(records)
+    candidates, warnings = advisor.list_verified_items(records)
 
-    assert len(candidates) == 3 # r4 is ignored
+    assert len(candidates) == 1
+    assert len(warnings) == 2
 
     r1_cand = next(c for c in candidates if c.record_id == "r1")
     assert r1_cand.is_verified_still_exists is True
 
-    r2_cand = next(c for c in candidates if c.record_id == "r2")
+    r2_cand = next(c for c in warnings if c.record_id == "r2")
     assert r2_cand.is_verified_still_exists is False
     assert "no longer exists" in r2_cand.message
 
-    r3_cand = next(c for c in candidates if c.record_id == "r3")
+    r3_cand = next(c for c in warnings if c.record_id == "r3")
     assert r3_cand.is_verified_still_exists is False
     assert "size changed" in r3_cand.message

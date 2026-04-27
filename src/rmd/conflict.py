@@ -11,10 +11,6 @@ class ConflictResolver:
 
         if verification_result == MigrationStatus.VERIFIED_MATCH:
             return MigrationStatus.SKIPPED_ALREADY_EXISTS
-        elif verification_result == MigrationStatus.VERIFIED_WEAK and source.size == target.size:
-            # If we only have weak verification (size match), we treat it as skipped for MVP
-            # to avoid unnecessary re-uploads, but flag it as skipped_already_exists
-            return MigrationStatus.SKIPPED_ALREADY_EXISTS
 
         return MigrationStatus.CONFLICT_TARGET_EXISTS
 

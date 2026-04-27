@@ -1,4 +1,5 @@
 import io
+import hashlib
 from typing import Iterator, Tuple, Dict
 from dataclasses import dataclass
 from .models import TransferItem, MigrationStatus
@@ -16,7 +17,7 @@ class MockMacICloudDriveAdapter(SourceAdapter):
 
     def list_items(self) -> Iterator[TransferItem | ICloudFileEvent]:
         for path, meta in self.mock_fs.items():
-            record_id = f"mac_icloud_{hash(path)}"
+            record_id = f"mac_icloud_{hashlib.sha1(path.encode('utf-8')).hexdigest()}"
 
             if path.endswith(".iCloud"):
                 # URD-REQ-010: Placeholder files
@@ -48,7 +49,7 @@ class MockMacICloudDriveAdapter(SourceAdapter):
 
     def open_stream(self, record_id: str) -> Tuple[io.BytesIO, Dict]:
         for path, meta in self.mock_fs.items():
-            if f"mac_icloud_{hash(path)}" == record_id:
+            if f"mac_icloud_{hashlib.sha1(path.encode('utf-8')).hexdigest()}" == record_id:
                 if meta.get("data"):
                     return io.BytesIO(meta["data"]), {"size": len(meta["data"])}
                 return io.BytesIO(b""), {"size": 0}

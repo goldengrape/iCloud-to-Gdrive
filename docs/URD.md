@@ -20,9 +20,9 @@
 
 每条迁移记录都必须有可追溯证据，包括源端标识、目标端标识、路径、大小、哈希、状态和校验时间。
 
-### URD-GOAL-003 安全清理指引
+### URD-GOAL-003 手动清理指引
 
-MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用户自行在 Finder、资源管理器、Photos 或 iCloud.com 中操作。
+MVP 阶段不执行自动删除，只展示目标端复核通过的“已验证迁移列表”，并引导用户自行在 Finder、资源管理器、Photos 或 iCloud.com 中操作。迁移成功不等于删除源端一定安全，UI 文案不得使用“安全删除”作为默认表达。
 
 ## 2. 用户角色
 
@@ -36,7 +36,7 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 
 ## 3. 产品范围
 
-### 3.1 当前版本范围
+### 3.1 Phase 2 目标范围（当前真实接入规划）
 
 - URD-REQ-001：本地客户端运行，不通过第三方中转服务器传输文件内容。
 - URD-REQ-002：不收集、不保存、不转发 Apple ID、Apple 密码或 2FA 验证码。
@@ -47,6 +47,8 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 - URD-REQ-007：上传前后执行真实的本地物理文件哈希与 Google Drive 远端元数据校验。
 - URD-REQ-008：输出 JSON 审计清单，并可导出 CSV。
 - URD-REQ-009：MVP 不执行自动删除，仅提供手动清理指引。
+
+> 当前代码状态说明：Phase 1 仅完成 Mock 原型验证。以上条目是 Phase 2 真实 Windows 接入的目标范围，不表示当前代码已经能够执行真实 iCloud 到 Google Drive 迁移。
 
 ### 3.2 非目标
 
@@ -94,11 +96,11 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 
 ### URD-REQ-016 冲突处理
 
-目标端存在同名文件时，先比对可用 checksum。内容一致则跳过并标记 `SKIPPED_ALREADY_EXISTS`。内容不同则进入冲突状态，用户可选择跳过、重命名上传、覆盖为新版本。覆盖必须记录旧目标文件 ID、旧 revision 和新 revision。
+目标端存在同名文件时，先比对可用 checksum。只有字节级强校验一致时，才能跳过并标记 `SKIPPED_ALREADY_EXISTS`。若仅能得到 `VERIFIED_WEAK`，不得自动跳过，也不得作为“内容一致”的依据，应进入冲突或等待用户确认的状态。内容不同则进入冲突状态，用户可选择跳过、重命名上传、覆盖为新版本。覆盖必须记录旧目标文件 ID、旧 revision 和新 revision。
 
 ### URD-REQ-017 审计清单
 
-每次迁移必须生成 JSON manifest。manifest 应具备防篡改能力：至少包含文件级记录哈希、整体 manifest SHA-256，以及 manifest 生成时间。CSV 只作为人工阅读导出，不作为唯一审计依据。
+每次迁移必须生成 JSON manifest。manifest 应具备完整性校验能力：至少包含文件级记录哈希、整体 manifest SHA-256，以及 manifest 生成时间。MVP 的 hash 机制用于检测非预期修改，不承诺抵抗恶意篡改。`manifest_sha256` 必须有明确的计算口径：要么写入独立的 `.sha256` 文件并覆盖最终 JSON 文件，要么在 JSON 内记录时按“排除 `metadata.manifest_sha256` 字段后的 canonical JSON”计算。CSV 只作为人工阅读导出，不作为唯一审计依据。
 
 ### URD-REQ-018 任务状态
 
@@ -110,7 +112,7 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 
 ### URD-REQ-020 清理指引
 
-MVP 只展示已验证迁移列表。展示前应复核目标文件仍存在，并且目标端 `size`、可用 checksum 或 `headRevisionId` 与 manifest 一致。工具不得删除 iCloud 文件、照片或最近删除项目。
+MVP 只展示目标端复核通过的“已验证迁移列表”。展示前应复核目标文件仍存在，并且目标端 `size`、可用 checksum 或 `headRevisionId` 与 manifest 一致。原本为 `VERIFIED_MATCH` 但复核失败的项目不得进入清理候选列表，只能进入风险提示列表并说明原因。工具不得删除 iCloud 文件、照片或最近删除项目。
 
 ## 6. 验收标准
 
@@ -126,9 +128,13 @@ MVP 只展示已验证迁移列表。展示前应复核目标文件仍存在，�
 
 所有 `VERIFIED_MATCH` 记录必须能通过源端哈希和目标端可用 checksum 证明内容一致。
 
-### URD-AC-004 Photos 资源关联
+### URD-AC-004A Windows Photos 降级验收
 
-Live Photo 与 RAW+JPEG 的关联关系必须通过 `resource_group_id` 在 manifest 中查询到。
+Windows Phase 2 仅验收本地已下载媒体文件的迁移完整性、路径映射、哈希校验和 manifest 记录完整性。不验收 Photos Library 的 Live Photo 关联、RAW+JPEG 关联、相册结构、编辑历史或收藏状态。
+
+### URD-AC-004B macOS Photos 资源关联验收
+
+macOS Phase 3 若启用 PhotoKit，则 Live Photo 与 RAW+JPEG 的关联关系必须通过 `resource_group_id` 在 manifest 中查询到。
 
 ### URD-AC-005 Manifest 完整性
 

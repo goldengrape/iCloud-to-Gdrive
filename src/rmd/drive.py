@@ -55,6 +55,10 @@ class MockGoogleDriveAdapter(TargetAdapter):
         import hashlib
         stream.seek(0)
         full_data = stream.read()
+        
+        if len(full_data) != item.source_size:
+            return DriveUploadResult(error="FAILED_SOURCE_READ")
+            
         md5Checksum = hashlib.md5(full_data).hexdigest()
         sha256Checksum = hashlib.sha256(full_data).hexdigest()
 

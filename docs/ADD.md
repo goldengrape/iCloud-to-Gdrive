@@ -13,7 +13,7 @@
 | ADD-FR-005 | 执行哈希与目标校验 | URD-REQ-015 | ADD-DP-005 | VerificationEngine：MD5/SHA-256 流式计算与真实 Drive 元数据比对 |
 | ADD-FR-006 | 管理任务、续传和重试 | URD-REQ-014, URD-REQ-018, URD-REQ-019 | ADD-DP-006 | TaskStore + RetryScheduler：SQLite 状态、offset、限流退避 |
 | ADD-FR-007 | 生成审计 manifest | URD-REQ-017, URD-AC-005 | ADD-DP-007 | ManifestWriter：JSON、CSV、记录哈希、整体 SHA-256 |
-| ADD-FR-008 | 展示手动清理指引 | URD-REQ-020, URD-AC-007 | ADD-DP-008 | CleanupAdvisor：只读复核、可删除清单、风险提示 |
+| ADD-FR-008 | 展示手动清理指引 | URD-REQ-020, URD-AC-007 | ADD-DP-008 | CleanupAdvisor：只读复核、已验证迁移候选列表、复核失败风险提示 |
 | ADD-FR-009 | 保护凭据和本地隐私 | URD-REQ-002, URD-CON-001, URD-CON-002 | ADD-DP-009 | SecurityBoundary：将 Token 持久化至系统安全区域（当前为 Dummy 内存存储） |
 | ADD-FR-010 | CLI 用户交互界面 | URD-REQ-001 | ADD-DP-010 | CLIRunner：接收用户参数，协调各个模块运行 |
 
@@ -67,6 +67,7 @@ Manifest 需要源端、目标端、校验和任务状态数据。这是审计�
 7. 实现真实的 Windows iCloud Drive 和 Photos Source Adapter（本地物理文件扫描）。
 8. 实现 CLI 用户交互入口 (`main.py`)，打通真实文件搬运与状态流转。
 9. 在 Windows 真实环境下完成端到端 (E2E) 集成测试。
+10. 修正文档中标出的 Phase 2 代码契约缺口：稳定 record_id、manifest hash 可验证、弱校验不自动跳过、清理候选只含复核通过项。
 
 **Phase 3：真实的 macOS 平台接入（待定，延期）**
 10. 实现真实的 macOS iCloud Drive 适配器（协调同步进程）。

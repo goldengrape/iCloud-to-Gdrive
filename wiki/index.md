@@ -11,6 +11,7 @@
 
 - [DEC-001 本地客户端](decisions/DEC-001-local-client.md)
 - [DEC-002 MVP 不自动删除](decisions/DEC-002-mvp-no-delete.md)
+- [DEC-004 Windows 优先真实接入](decisions/DEC-004-windows-first.md)
 
 ## 模块
 

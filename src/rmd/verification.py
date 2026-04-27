@@ -15,6 +15,7 @@ class DriveFileMetadata:
     md5Checksum: Optional[str] = None
     sha1Checksum: Optional[str] = None
     sha256Checksum: Optional[str] = None
+    headRevisionId: Optional[str] = None
 
 class VerificationEngine:
     @staticmethod

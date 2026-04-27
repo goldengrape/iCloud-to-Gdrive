@@ -1,4 +1,4 @@
-from typing import List, Callable, Dict
+from typing import List, Callable, Dict, Tuple
 from dataclasses import dataclass
 from .models import ManifestRecord, MigrationStatus
 from .verification import DriveFileMetadata
@@ -19,10 +19,11 @@ class CleanupAdvisor:
         """
         self.target_checker = target_checker
 
-    def list_verified_items(self, records: List[ManifestRecord]) -> List[CleanupCandidate]:
+    def list_verified_items(self, records: List[ManifestRecord]) -> Tuple[List[CleanupCandidate], List[CleanupCandidate]]:
         # URD-REQ-020: 清理指引，复核目标文件仍存在
         # TDD-TEST-019: 禁止自动删除 (This module only reads and returns lists, no delete actions available)
         candidates = []
+        warnings = []
 
         for record in records:
             if record.status != MigrationStatus.VERIFIED_MATCH:
@@ -34,7 +35,7 @@ class CleanupAdvisor:
             metadata = self.target_checker(record.target_drive_file_id)
 
             if not metadata:
-                candidates.append(CleanupCandidate(
+                warnings.append(CleanupCandidate(
                     record_id=record.record_id,
                     source_path=record.source_path or record.source_display_name,
                     target_drive_file_id=record.target_drive_file_id,
@@ -45,7 +46,7 @@ class CleanupAdvisor:
 
             # Verify size still matches
             if metadata.size != record.target_size:
-                candidates.append(CleanupCandidate(
+                warnings.append(CleanupCandidate(
                     record_id=record.record_id,
                     source_path=record.source_path or record.source_display_name,
                     target_drive_file_id=record.target_drive_file_id,
@@ -62,7 +63,7 @@ class CleanupAdvisor:
                 hash_match = metadata.md5Checksum.lower() == record.target_md5.lower()
 
             if not hash_match:
-                candidates.append(CleanupCandidate(
+                warnings.append(CleanupCandidate(
                     record_id=record.record_id,
                     source_path=record.source_path or record.source_display_name,
                     target_drive_file_id=record.target_drive_file_id,
@@ -80,4 +81,4 @@ class CleanupAdvisor:
                 message="File verified in target. Safe to manually delete in Finder/Photos."
             ))
 
-        return candidates
+        return candidates, warnings

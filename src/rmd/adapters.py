@@ -45,6 +45,10 @@ class FakeTargetAdapter(TargetAdapter):
 
     def upload(self, item: TransferItem, stream: io.BytesIO, **kwargs) -> DriveUploadResult:
         data = stream.read()
+        
+        if len(data) != item.source_size:
+            return DriveUploadResult(error="FAILED_SOURCE_READ")
+            
         file_id = f"fake_drive_id_{uuid.uuid4().hex[:8]}"
 
         # Calculate real md5/sha256 of the uploaded data to simulate Drive

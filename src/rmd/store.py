@@ -136,13 +136,13 @@ class ManifestWriter:
             record.record_hash = data['record_hash'] # Update object
             manifest_data["records"].append(data)
 
-        json_bytes = json.dumps(manifest_data, indent=2).encode('utf-8')
+        json_bytes = json.dumps(manifest_data, sort_keys=True, indent=2).encode('utf-8')
         manifest_sha256 = hashlib.sha256(json_bytes).hexdigest()
         manifest_data["metadata"]["manifest_sha256"] = manifest_sha256
 
         # re-dump with manifest hash
         with open(json_path, 'w', encoding='utf-8') as f:
-            json.dump(manifest_data, f, indent=2)
+            json.dump(manifest_data, f, sort_keys=True, indent=2)
 
         # CSV output
         if records:

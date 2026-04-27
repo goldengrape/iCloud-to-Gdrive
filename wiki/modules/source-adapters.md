@@ -19,6 +19,6 @@
 ## 关键规则
 
 - 不可读文件也必须输出状态，不得静默忽略。
-- macOS Photos 使用 PhotoKit。
-- Windows Photos 只当作目录媒体文件处理。
-- package、Live Photo、RAW+JPEG 交给 ResourceNormalizer 统一处理。
+- macOS Photos 使用 PhotoKit，但属于 Phase 3。
+- Windows Photos 只当作目录媒体文件处理，属于 Phase 2 当前优先范围。
+- package、Live Photo、RAW+JPEG 交给 ResourceNormalizer 统一处理；Live Photo / RAW+JPEG 关联关系不是 Windows Phase 2 必验项。
