@@ -111,7 +111,7 @@ Git 检查点：`feat/rmd-task-013-real-google-auth`。
 测试：E2E-TEST-003, E2E-TEST-004。  
 Git 检查点：`feat/rmd-task-014-real-drive-upload`。
 
-### RMD-TASK-015 实现真实 Windows iCloud 本地文件扫描 [未完成]
+### RMD-TASK-015 实现真实 Windows iCloud 本地文件扫描 [已完成]
 
 目标：实现 `RealWindowsICloudDriveAdapter` 和 `RealWindowsPhotosAdapter`。真实遍历 `~\iCloudDrive`，探测 `FILE_ATTRIBUTE_OFFLINE` 或 `.iCloud` 扩展名并正确跳过未下载文件。  
 依赖：RMD-TASK-010（重写）。  
