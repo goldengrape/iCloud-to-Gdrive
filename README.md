@@ -154,3 +154,41 @@ uv run pytest tests/
 - 本工具**不会收集 Apple ID 密码**，亦不调用任何 iCloud 私有 API。
 - Google 账号仅通过官方 OAuth 2.0 流程授权，Token 加密保存在 Windows 凭据管理器中。
 - **本工具不会自动删除任何文件**。迁移完成后是否清理 iCloud 中的源文件，完全由您手动决定。
+
+---
+
+## 给 AI Agent 的使用说明
+
+本项目在 `skill/` 目录中内置了一份标准化的 **Agent Skill**，专门帮助 AI assistant（如 Antigravity、Claude Code 等）理解和操作此工具。
+
+### 如何加载 Skill
+
+在支持 Skill 的 AI 工具中，将 `skill/SKILL.md` 的路径添加到 Skills 目录，即可让 AI 自动感知本工具的存在与使用方式。
+
+```
+skill/
+├── SKILL.md                      # 主指引：安装、配置、迁移、验证的完整工作流
+└── references/
+    └── gcp_oauth_guide.md        # 详细的 OAuth 凭据配置步骤（含浏览器自动化模版）
+```
+
+### AI Agent 能做什么
+
+加载 Skill 后，AI 可以自主完成：
+
+| 任务 | 说明 |
+|---|---|
+| **安装工具** | 执行 `git clone` + `uv sync` |
+| **配置 OAuth 凭据** | 操控浏览器自动完成 Google Cloud Console 的申请流程，下载并保存 `client_secret.json` |
+| **执行迁移** | 运行 `uv run icloud-to-gdrive migrate`，监控输出并汇报进度 |
+| **解读结果** | 分析 manifest 文件，向用户汇报成功、跳过、失败的文件统计 |
+
+### 触发示例
+
+向 AI 说出以下任意一句话，即可触发 Skill：
+
+- "帮我把 iCloud 文件迁移到 Google Drive"
+- "配置 client_secret.json"
+- "查看迁移进度"
+- "验证迁移结果"
+
