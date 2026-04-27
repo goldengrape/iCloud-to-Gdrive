@@ -19,6 +19,7 @@ class DriveUploadResult:
     metadata: Optional[DriveFileMetadata] = None
     is_completed: bool = False
     error: Optional[str] = None
+    session_uri: Optional[str] = None
 
 class TargetAdapter:
     def upload(self, item: TransferItem, stream: io.BytesIO, **kwargs) -> DriveUploadResult:

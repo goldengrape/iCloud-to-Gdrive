@@ -30,7 +30,7 @@ def test_resumable_upload_large_file():
     # Init
     result1 = adapter.upload(item, stream)
     assert result1.is_completed is False
-    session_uri = result1.error
+    session_uri = result1.session_uri
     assert session_uri.startswith("https://mock.upload.drive/")
 
     # Resume / Chunk 1 (Simulate partial upload failure)
@@ -75,3 +75,74 @@ def test_upload_quota():
 
     result = adapter.upload(item, stream)
     assert result.error == "UPLOAD_PAUSED_QUOTA"
+
+from unittest.mock import MagicMock, patch
+from googleapiclient.errors import HttpError
+import httplib2
+from rmd.drive import RealGoogleDriveAdapter, DriveError
+
+@patch('rmd.drive.build')
+def test_real_drive_adapter_upload_success(mock_build):
+    mock_auth = MagicMock()
+    mock_auth.get_credentials.return_value.valid = True
+
+    # Setup mocks
+    mock_service = MagicMock()
+    mock_build.return_value = mock_service
+    
+    mock_files = mock_service.files.return_value
+    # mock list for folder search (return empty to trigger creation)
+    mock_files.list.return_value.execute.return_value = {'files': []}
+    # mock create for folder
+    mock_files.create.return_value.execute.return_value = {'id': 'folder_id_123'}
+    
+    # mock create for file upload
+    mock_request = MagicMock()
+    mock_files.create.return_value = mock_request
+    
+    # mock next_chunk sequence
+    mock_request.next_chunk.side_effect = [
+        (MagicMock(resumable_progress=5), None),
+        (MagicMock(resumable_progress=10), {'id': 'file_id_456', 'size': '10', 'md5Checksum': 'md5', 'sha256Checksum': 'sha256', 'headRevisionId': 'rev1'})
+    ]
+
+    adapter = RealGoogleDriveAdapter(mock_auth, folder_name="Test-Folder")
+    item = TransferItem(task_id="t1", record_id="r1", source_type="icloud", source_display_name="test.txt", resource_kind="file", source_size=10)
+    stream = io.BytesIO(b"0123456789")
+
+    result = adapter.upload(item, stream)
+
+    assert result.is_completed is True
+    assert result.target_drive_file_id == 'file_id_456'
+    assert result.metadata.size == 10
+    assert result.metadata.md5Checksum == 'md5'
+
+@patch('rmd.drive.build')
+def test_real_drive_adapter_upload_rate_limit(mock_build):
+    mock_auth = MagicMock()
+    mock_auth.get_credentials.return_value.valid = True
+
+    mock_service = MagicMock()
+    mock_build.return_value = mock_service
+    
+    mock_files = mock_service.files.return_value
+    mock_files.list.return_value.execute.return_value = {'files': [{'id': 'folder_id_123'}]}
+    
+    mock_request = MagicMock()
+    mock_files.create.return_value = mock_request
+    mock_request.resumable_uri = 'https://resumable.uri/123'
+    
+    # mock next_chunk throwing rate limit
+    resp = httplib2.Response({'status': '429'})
+    error = HttpError(resp, b'Rate Limit Exceeded')
+    mock_request.next_chunk.side_effect = error
+
+    adapter = RealGoogleDriveAdapter(mock_auth)
+    item = TransferItem(task_id="t1", record_id="r1", source_type="icloud", source_display_name="test.txt", resource_kind="file", source_size=10)
+    stream = io.BytesIO(b"0123456789")
+
+    result = adapter.upload(item, stream)
+
+    assert result.is_completed is False
+    assert result.error == "UPLOAD_PAUSED_RATE_LIMIT"
+    assert result.session_uri == 'https://resumable.uri/123'

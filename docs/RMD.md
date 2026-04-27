@@ -104,7 +104,7 @@ Git 检查点：`fix/rmd-task-012a-contract-alignment`。
 测试：E2E-TEST-002。  
 Git 检查点：`feat/rmd-task-013-real-google-auth`。
 
-### RMD-TASK-014 实现真实 Google Drive 分块与续传 [未完成]
+### RMD-TASK-014 实现真实 Google Drive 分块与续传 [已完成]
 
 目标：引入 `google-api-python-client`，实现真实的分块上传（MediaIoBaseUpload）和断点续传；能获取真实的目标 metadata（如 `sha256Checksum`）。  
 依赖：RMD-TASK-013。  
