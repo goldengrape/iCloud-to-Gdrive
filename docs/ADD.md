@@ -6,15 +6,16 @@
 
 | FR ID | 功能需求 | 关联 URD | DP ID | 设计参数 |
 |---|---|---|---|---|
-| ADD-FR-001 | 本地安全接入 iCloud Drive | URD-REQ-001, URD-REQ-010 | ADD-DP-001 | PlatformSourceAdapter：按平台实现 Drive 文件读取 |
-| ADD-FR-002 | 本地安全接入 iCloud Photos | URD-REQ-003, URD-REQ-011 | ADD-DP-002 | PhotoSourceAdapter：macOS PhotoKit + Windows 文件目录模式 |
+| ADD-FR-001 | 本地安全接入 iCloud Drive | URD-REQ-001, URD-REQ-010 | ADD-DP-001 | PlatformSourceAdapter：按平台实现读取（当前为 Mock，即将实现 RealWindows 适配器） |
+| ADD-FR-002 | 本地安全接入 iCloud Photos | URD-REQ-003, URD-REQ-011 | ADD-DP-002 | PhotoSourceAdapter：（当前为 Mock，即将在 Windows 下按物理目录扫描） |
 | ADD-FR-003 | 处理复合资源和 package | URD-REQ-011, URD-REQ-012, URD-REQ-016 | ADD-DP-003 | ResourceNormalizer：输出统一 ResourceGroup 与 TransferItem |
-| ADD-FR-004 | 授权并写入 Google Drive | URD-REQ-006, URD-REQ-013, URD-REQ-014 | ADD-DP-004 | GoogleDriveTargetAdapter：OAuth、目录选择、上传会话 |
-| ADD-FR-005 | 执行哈希与目标校验 | URD-REQ-015 | ADD-DP-005 | VerificationEngine：MD5/SHA-256 流式计算与 Drive 元数据比对 |
+| ADD-FR-004 | 授权并写入 Google Drive | URD-REQ-006, URD-REQ-013, URD-REQ-014 | ADD-DP-004 | GoogleDriveTargetAdapter：（当前为 Mock，即将对接真实的 Google API） |
+| ADD-FR-005 | 执行哈希与目标校验 | URD-REQ-015 | ADD-DP-005 | VerificationEngine：MD5/SHA-256 流式计算与真实 Drive 元数据比对 |
 | ADD-FR-006 | 管理任务、续传和重试 | URD-REQ-014, URD-REQ-018, URD-REQ-019 | ADD-DP-006 | TaskStore + RetryScheduler：SQLite 状态、offset、限流退避 |
 | ADD-FR-007 | 生成审计 manifest | URD-REQ-017, URD-AC-005 | ADD-DP-007 | ManifestWriter：JSON、CSV、记录哈希、整体 SHA-256 |
 | ADD-FR-008 | 展示手动清理指引 | URD-REQ-020, URD-AC-007 | ADD-DP-008 | CleanupAdvisor：只读复核、可删除清单、风险提示 |
-| ADD-FR-009 | 保护凭据和本地隐私 | URD-REQ-002, URD-CON-001, URD-CON-002 | ADD-DP-009 | SecurityBoundary：系统钥匙串/凭据管理、日志脱敏 |
+| ADD-FR-009 | 保护凭据和本地隐私 | URD-REQ-002, URD-CON-001, URD-CON-002 | ADD-DP-009 | SecurityBoundary：将 Token 持久化至系统安全区域（当前为 Dummy 内存存储） |
+| ADD-FR-010 | CLI 用户交互界面 | URD-REQ-001 | ADD-DP-010 | CLIRunner：接收用户参数，协调各个模块运行 |
 
 ## 2. 设计矩阵
 
@@ -54,14 +55,23 @@ Manifest 需要源端、目标端、校验和任务状态数据。这是审计�
 
 ## 4. 执行顺序
 
+**Phase 1：Mock 验证阶段（已完成）**
 1. 定义数据结构和状态机。
 2. 实现 TaskStore 与 ManifestWriter 的最小版本。
-3. 实现本地假源端和假 Drive 目标端，先跑通校验链。
-4. 实现 Google Drive OAuth 和 resumable upload。
-5. 实现 macOS iCloud Drive 适配器。
-6. 实现 macOS Photos 适配器。
-7. 实现 Windows 文件目录适配器。
-8. 实现清理指引页面。
+3. 实现本地假源端和假 Drive 目标端（各种 Mock Adapter）。
+4. 跑通验证引擎和整个状态机的单元测试。
+
+**Phase 2：真实的 Windows 平台端到端接入（进行中，优先级最高）**
+5. 实现真实的 Google OAuth 与系统级 Token 安全存储。
+6. 实现真实的 Google Drive Target Adapter（对接 API，跑通 Resumable Upload）。
+7. 实现真实的 Windows iCloud Drive 和 Photos Source Adapter（本地物理文件扫描）。
+8. 实现 CLI 用户交互入口 (`main.py`)，打通真实文件搬运与状态流转。
+9. 在 Windows 真实环境下完成端到端 (E2E) 集成测试。
+
+**Phase 3：真实的 macOS 平台接入（待定，延期）**
+10. 实现真实的 macOS iCloud Drive 适配器（协调同步进程）。
+11. 实现真实的 macOS Photos 适配器（PhotoKit 对接）。
+12. 实现清理指引页面。
 
 ## 5. 接受的设计取舍
 

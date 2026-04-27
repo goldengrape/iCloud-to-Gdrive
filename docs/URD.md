@@ -1,9 +1,14 @@
 # URD - Idea Brief / 用户需求文档
 
 项目：iCloud 到 Google Drive 迁移工具  
-版本：V3 文档化  
+版本：V4 真实接入规划  
 文档级别：strict  
 日期：2026-04-26
+
+> **项目演进说明**：
+> - **Phase 1 (Mock 原型验证)**：已完成。验证了数据结构、状态机和测试用例，全为模拟端点。
+> - **Phase 2 (Windows 真实接入)**：进行中。**优先全力实现 Windows 端**，接通真实的本地文件系统与真实的 Google Drive API。
+> - **Phase 3 (macOS 真实接入)**：待定。在 Windows 真实端到端跑通之后再实现。
 
 ## 1. 项目目标
 
@@ -35,11 +40,11 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 
 - URD-REQ-001：本地客户端运行，不通过第三方中转服务器传输文件内容。
 - URD-REQ-002：不收集、不保存、不转发 Apple ID、Apple 密码或 2FA 验证码。
-- URD-REQ-003：macOS 和 Windows 使用不同数据接入策略，不承诺同等能力。
+- URD-REQ-003：**优先全力完成 Windows 端的真实接入**，macOS 的真实接入延后。
 - URD-REQ-004：支持 iCloud Drive 文件迁移。
-- URD-REQ-005：支持 iCloud Photos 媒体资产迁移，macOS 使用 PhotoKit，Windows 只处理已同步到本地的媒体文件。
-- URD-REQ-006：支持 Google Drive OAuth 授权，优先使用 `drive.file` 权限。
-- URD-REQ-007：上传前后执行哈希与元数据校验。
+- URD-REQ-005：支持 iCloud Photos 媒体资产迁移，Windows 只处理已同步到本地的媒体文件。
+- URD-REQ-006：支持真实的 Google Drive OAuth 授权，优先使用 `drive.file` 权限。
+- URD-REQ-007：上传前后执行真实的本地物理文件哈希与 Google Drive 远端元数据校验。
 - URD-REQ-008：输出 JSON 审计清单，并可导出 CSV。
 - URD-REQ-009：MVP 不执行自动删除，仅提供手动清理指引。
 
@@ -54,10 +59,10 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 
 ## 4. 平台能力矩阵
 
-| 能力 | macOS | Windows |
+| 能力 | macOS (Phase 3) | Windows (Phase 2 - 当前优先级) |
 |---|---|---|
-| iCloud Drive | 通过系统暴露的 iCloud Drive 文件位置读取；读取时必须协调文件访问，处理占位、下载中、冲突和失败 | 读取 iCloud for Windows 在资源管理器中暴露的本地目录；只处理已下载或可由用户下载的文件 |
-| iCloud Photos | 使用 PhotoKit 读取 Photos app 管理的照片、视频、Live Photo、RAW 和相册关系 | 读取 iCloud Photos 同步目录中的本地媒体文件；不承诺完整恢复 Photos Library 资产关系 |
+| iCloud Drive | 暂缓。未来通过系统暴露的 iCloud Drive 文件位置读取；需协调下载中、冲突和失败。 | 真实读取本地目录（如 `~\iCloudDrive`）。通过探测文件流或原生 API 识别未下载的 `.iCloud` 文件，并明确跳过未下载项目。 |
+| iCloud Photos | 暂缓。未来使用 PhotoKit 读取。 | 真实扫描本地 iCloud Photos 目录（如 `~\Pictures\iCloud Photos`）。只处理已下载到本地的媒体文件，不恢复相册语义。 |
 | Package 文件 | 默认压缩为 `.zip` 后上传，同时记录压缩前文件数、总大小和压缩包哈希 | 视为普通目录或普通文件；需在 UI 中提示可能无法保留 macOS 文档语义 |
 | 清理指引 | Finder / Photos / iCloud.com 手动操作 | 资源管理器 / iCloud.com 手动操作 |
 
@@ -65,13 +70,11 @@ MVP 阶段不执行自动删除，只展示已验证迁移列表，并引导用�
 
 ### URD-REQ-010 iCloud Drive 接入
 
-工具必须发现本地 iCloud Drive 入口，读取用户已授权访问的文件。macOS 读取 iCloud 文件或 package 时必须避免与系统同步进程产生冲突。Windows 只能处理本机已下载的文件；未下载文件应提示用户先在资源管理器中保留到本机。
+在 Phase 2，工具必须自动或手动配置发现 Windows 本地的 iCloud Drive 物理入口（例如 `%USERPROFILE%\iCloudDrive`）。必须有真实的遍历代码扫描本地文件，只能处理本机已完全下载的文件。遇到 `.iCloud` 等未下载的占位文件时，应提示用户先在资源管理器中“始终保留在此设备上”。
 
 ### URD-REQ-011 iCloud Photos 接入
 
-macOS 版本应通过 PhotoKit 读取照片库资产。默认导出原始资源，不重编码。Live Photo 应导出为静态图资源与视频资源，并使用同一个 `resource_group_id` 关联。RAW+JPEG 应作为两个资源迁移，并在 manifest 中记录关联关系。
-
-Windows 版本只处理 iCloud Photos 同步目录中已经下载到本地的照片和视频文件；不承诺相册结构、编辑历史、Live Photo 关联或 RAW+JPEG 关联一定可恢复。
+在 Phase 2，Windows 版本只处理 iCloud Photos 默认同步目录（例如 `%USERPROFILE%\Pictures\iCloud Photos`）中已经下载到本地的照片和视频实体文件。由于 Windows 环境没有 PhotoKit，不再承诺关联 Live Photo、RAW+JPEG 或复杂的相册结构。macOS 的 PhotoKit 接入延期至 Phase 3。
 
 ### URD-REQ-012 元数据与 sidecar
 

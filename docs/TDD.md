@@ -4,10 +4,13 @@
 
 ## 1. 测试策略
 
-- 单元测试：数据结构、状态机、哈希比对、错误分类。
+> **当前阶段声明 (Phase 1)**：目前的 `TDD-TEST-001` 至 `TDD-TEST-020` 测试均已通过，但**全数运行在基于内存字典的 Mock 适配器上**，只证明了核心逻辑和状态机的正确性。
+
+- 单元测试：数据结构、状态机、哈希比对、错误分类（已通过 Mock 验证）。
 - 合同测试：SourceAdapter、GoogleDriveTargetAdapter、ManifestWriter、CleanupAdvisor。
-- 集成测试：本地假源端到假 Drive 目标端，再到真实 Google Drive 测试账号。
-- 平台测试：macOS iCloud Drive、macOS Photos、Windows iCloud for Windows。
+- 集成测试：本地假源端到假 Drive 目标端（已通过）。
+- **(Phase 2 新增) 端到端真实环境测试 (E2E)**：在真实的 Windows 文件系统和真实的 Google Drive API 环境下运行完整数据流转。
+- 平台测试：Windows iCloud for Windows（当前优先）、macOS iCloud Drive（延期）、macOS Photos（延期）。
 - 负向测试：权限拒绝、占位文件、配额、限流、文件变化、session 过期、目标文件被删除。
 
 ## 2. 测试用例
@@ -34,6 +37,16 @@
 | TDD-TEST-018 | 清理列表目标复核 | URD-REQ-020 | 展示前重新读取目标 size/checksum/revision；不一致则不展示 |
 | TDD-TEST-019 | 禁止自动删除 | URD-REQ-020, URD-AC-007 | MVP 构建中不存在 iCloud 删除接口调用路径 |
 | TDD-TEST-020 | 日志脱敏 | URD-CON-002 | 日志中不出现 token、完整文件内容、Apple 账户凭据 |
+
+### 2.1 端到端与真实环境测试 (Phase 2 新增)
+
+| Test ID | 验证目标 | 关联需求 | 判定依据 |
+|---|---|---|---|
+| E2E-TEST-001 | Windows 真实文件扫描 | URD-REQ-010 | 在测试目录中放置真实文件与 `.iCloud` 快捷方式，工具能准确跳过 `.iCloud` 文件 |
+| E2E-TEST-002 | 真实 Google OAuth 授权 | URD-REQ-013 | 能够成功拉开浏览器授权并获取有效的 `drive.file` scope token，存储到 Windows Credential Manager |
+| E2E-TEST-003 | 真实 Google Drive API 上传 | URD-REQ-014 | 5MB 以下文件成功直传，大于 5MB 文件触发 Resumable Upload 成功，Drive 中出现实体文件 |
+| E2E-TEST-004 | 真实的 SHA-256 远端校验 | URD-REQ-015 | 根据 E2E-TEST-003 结果，比对 Drive API 返回的元数据 `sha256Checksum` 与本地计算哈希一致 |
+| E2E-TEST-005 | CLI 流程闭环 | ADD-FR-010 | 用户通过终端执行 `python main.py`，经历完整的【授权->扫描->上传->校验->生成 manifest】闭环 |
 
 ## 3. 关键测试数据
 

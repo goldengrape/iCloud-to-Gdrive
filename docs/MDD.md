@@ -11,19 +11,26 @@
 输入：系统环境、配置文件。  
 输出：`PlatformCapabilities`。
 
+> **当前状态（Phase 1）**：仅有 Mock 数据模型。
+> **规划状态（Phase 2）**：将实现真实的 Windows 平台检测逻辑。
+
 ### MDD-MOD-002 ICloudDriveSourceAdapter
 
 职责：按平台枚举和读取 iCloud Drive 文件。
 
-- macOS：通过系统文件访问能力读取 iCloud Drive；必须协调读取 package 和普通文件。
-- Windows：读取 iCloud for Windows 本地目录；未下载文件输出 `SOURCE_PLACEHOLDER` 或 `SOURCE_UNAVAILABLE`。
+- **macOS (Phase 3)**：通过系统文件访问能力读取 iCloud Drive；必须协调读取 package 和普通文件。
+- **Windows (Phase 2 - RealWindowsICloudDriveAdapter)**：使用 `os` 或 `pathlib` 真实遍历 `~\iCloudDrive` 等本地物理目录；利用文件属性探测功能准确识别未下载的 `.iCloud` 文件，对未下载文件输出 `SOURCE_PLACEHOLDER` 并跳过处理。
+
+> **当前状态（Phase 1）**：仅存在 `MockWindowsICloudAdapter` 等桩代码。
 
 ### MDD-MOD-003 ICloudPhotosSourceAdapter
 
 职责：读取照片和视频资产。
 
-- macOS：PhotoKit 模式，输出资产资源与库级元数据。
-- Windows：目录模式，输出普通媒体文件。
+- **macOS (Phase 3)**：PhotoKit 模式，输出资产资源与库级元数据。
+- **Windows (Phase 2 - RealWindowsPhotosAdapter)**：目录模式，扫描 `~\Pictures\iCloud Photos` 目录输出普通媒体文件。
+
+> **当前状态（Phase 1）**：仅存在 `MockMacPhotosAdapter` 等桩代码。
 
 ### MDD-MOD-004 ResourceNormalizer
 
@@ -32,6 +39,7 @@
 ### MDD-MOD-005 GoogleDriveTargetAdapter
 
 职责：OAuth、目标目录管理、文件上传、目标元数据读取、Drive 错误分类。
+> **规划实现 (RealGoogleDriveTargetAdapter)**：引入 `google-auth-oauthlib` 真实拉起浏览器授权，引入 `google-api-python-client` 真实调用 API 并实现 `Resumable Upload`。当前仅为 `MockGoogleDriveAdapter`。
 
 ### MDD-MOD-006 VerificationEngine
 
@@ -56,6 +64,12 @@
 ### MDD-MOD-011 SecurityBoundary
 
 职责：OAuth token 安全存储、日志脱敏、凭据禁入检查。
+> **规划实现**：在 Windows 上应调用 Credential Manager 等系统级安全存储，替代目前的 `DummyTokenStorage`。
+
+### MDD-MOD-012 CLIRunner (新增)
+
+职责：接收用户的命令行参数或交互式输入，初始化相关的 Adapter 和 TaskStore，调用 VerificationEngine 并报告上传进度，协调以上所有模块组装成可执行应用。
+依赖：`argparse` / `click`，所有其他业务模块。
 
 ## 2. 数据结构
 
