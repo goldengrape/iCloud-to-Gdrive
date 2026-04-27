@@ -18,3 +18,4 @@
   - RMD-TASK-012: 实现清理指引
 - **备注**: Mock 主体流程打通，路线图 RMD.md 已同步更新标注 RMD-TASK-001 至 RMD-TASK-012 为“[已完成 (Mock验证阶段)]”。当前尚不可作为真实迁移工具运行。
 - **追加**: 完成 RMD-TASK-012A 修复 Mock 阶段文档契约缺口，正式进入 Phase 2 Windows 真实接入阶段。
+- **追加**: 完成 RMD-TASK-013，集成真实的 Google OAuth 浏览器登录，并使用 Windows Credential Manager 实现 token 本地安全存储。

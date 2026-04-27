@@ -3,7 +3,7 @@
 ## 0. 实施进展追踪
 
 - **Phase 1 (Mock 验证阶段)**：首批功能设计 (RMD-TASK-001 至 RMD-TASK-012) 的 Mock 版本实现完成并通过单元测试。数据结构、状态机和接口设计已闭环。
-- **Phase 2 (Windows 真实接入)**：进入优先级最高的阶段 (RMD-TASK-013 至 RMD-TASK-017)，目前正在执行中。Mock 阶段暴露出的契约缺口 RMD-TASK-012A 已完成。
+- **Phase 2 (Windows 真实接入)**：进入优先级最高的阶段 (RMD-TASK-013 至 RMD-TASK-017)，目前正在执行中。RMD-TASK-013（真实 Google OAuth）已完成。
 
 ## 1. 需求到设计追踪
 

@@ -33,3 +33,7 @@
 ## 问题
 
 - [PROB-001 平台下载状态验证](issues/PROB-001-platform-download-state.md)
+
+## 操作指引
+
+- [AI Agent: 自动化获取 GCP OAuth 凭据](../docs/agent_guide_gcp_oauth.md)

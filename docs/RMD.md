@@ -97,7 +97,7 @@ Git 检查点：`fix/rmd-task-012a-contract-alignment`。
 
 ## 2. Windows 真实接入与端到端集成 (Phase 2 - 当前优先级)
 
-### RMD-TASK-013 实现真实 Google OAuth 与 Token 本地安全存储 [未完成]
+### RMD-TASK-013 实现真实 Google OAuth 与 Token 本地安全存储 [已完成]
 
 目标：引入 `google-auth-oauthlib`，实现真实的浏览器拉起和本地回调；在 Windows 上使用 `keyring` 将 token 写入 Credential Manager。  
 依赖：RMD-TASK-006（重写）、RMD-TASK-012A。  
